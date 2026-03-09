@@ -36,7 +36,7 @@ class DriveState extends State {
 
     execute(scene, truck) {
 
-        const speed = 5
+        const speed = 2.5
         let moving = false
 
         if (scene.cursors.left.isDown) {

@@ -3,29 +3,12 @@ class PostOffice extends Phaser.Scene {
         super('postOfficeScene')
     }
 
-    preload() {
-        // load assets
-        this.load.path = './assets/'
-        this.load.image('letterbg', 'letterbg.png')
-        this.load.image('postoffice', 'postoffice.png')
-        this.load.image('truck', 'truckwide.png')
-        this.load.image('finish', 'finish.png')
-        this.load.image('crosswalk', 'crosswalk.png')
-        this.load.image('crosswalkside', 'crosswalkside.png')
-        this.load.image('river', 'river.png')
-        this.load.image('apartment', 'apartment.png')
-        this.load.image('scenecheck', 'scenecheck.png')
-        this.load.spritesheet('stoplight', 'stoplight.png', {
-            frameWidth: 850,
-            frameHeight: 640
-        })
-        this.load.spritesheet('truckwidespritesheet', 'truckwidespritesheet.png', {
-            frameWidth: 64,
-            frameHeight: 64
-        })
-    }
-
     create() {
+        this.bgm = this.sound.add('bgmusic', {
+            volume: 0.3,
+            loop: true
+        })
+        this.bgm.play()
         // background
         this.letterbg = this.add.tileSprite(0, 0, 1000, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
         this.postoffice = this.add.tileSprite(100, 105, 800, 600, 'postoffice').setOrigin(0, 0).setDepth(1)
@@ -35,14 +18,39 @@ class PostOffice extends Phaser.Scene {
 
         this.truck = new Truck(this, 825, 300, 'truckwidespritesheet', 0).setDepth(2)
 
+        // x, y, width, height
+        this.collcheck1 = this.add.rectangle(710, 390, 180, 305, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
+        this.collcheck2 = this.add.rectangle(110, 570, 600, 125, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
+        this.collcheck3 = this.add.rectangle(110, 115, 447, 305, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
+        this.collcheck4 = this.add.rectangle(425, 115, 467, 123, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
+
         this.cursors = this.input.keyboard.createCursorKeys()
+
+        this.collisionStart = null
     }
 
-    update() {
+    update(time) {
         this.truckFSM.step()
 
+        // scene transition
         if (this.checkCollision(this.truck, this.scenecheck1)) {
             this.scene.start('riverScene')
+        }
+
+        // check wall collisions
+        if (this.checkTruckCollisions()) {
+
+            if (!this.collisionStart) {
+                this.collisionStart = time
+            }
+
+            if (time - this.collisionStart > 1000) {
+                this.bgm.stop()
+                this.scene.restart()
+            }
+
+        } else {
+            this.collisionStart = null
         }
     }
 
@@ -52,6 +60,15 @@ class PostOffice extends Phaser.Scene {
             obj1.x + obj1.width > obj2.x &&
             obj1.y < obj2.y + obj2.height &&
             obj1.y + obj1.height > obj2.y
+        )
+    }
+
+    checkTruckCollisions() {
+        return (
+            this.checkCollision(this.truck, this.collcheck1) ||
+            this.checkCollision(this.truck, this.collcheck2) ||
+            this.checkCollision(this.truck, this.collcheck3) ||
+            this.checkCollision(this.truck, this.collcheck4)
         )
     }
 }
