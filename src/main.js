@@ -3,9 +3,8 @@
 const config = {
     parent: 'phaser-game',
     type: Phaser.AUTO,
-    width: 850,
-    height: 640,
-    backgroundColor: '#000000',
+    width: 1000,
+    height: 800,
     resolution: window.devicePixelRatio,
     pixelArt: true,
     zoom: 2,
@@ -15,7 +14,7 @@ const config = {
             debug: true
         }
     },
-    scene: [ PostOffice, Downtown, Apartment ],
+    scene: [ PostOffice, River, Apartment ],
     fps: {
         target: 60,
         forceSetTimeOut: true

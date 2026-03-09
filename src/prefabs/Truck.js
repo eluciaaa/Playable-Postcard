@@ -36,13 +36,13 @@ class DriveState extends State {
 
     execute(scene, truck) {
 
-        const speed = 2
+        const speed = 5
         let moving = false
 
         if (scene.cursors.left.isDown) {
             truck.setFrame(0)
             truck.setFlipX(false)
-            truck.setFlipY(false)   // reset vertical flip
+            truck.setFlipY(false)
             truck.x -= speed
             moving = true
         }
@@ -50,7 +50,7 @@ class DriveState extends State {
         else if (scene.cursors.right.isDown) {
             truck.setFrame(0)
             truck.setFlipX(true)
-            truck.setFlipY(false)   // reset vertical flip
+            truck.setFlipY(false)
             truck.x += speed
             moving = true
         }
@@ -58,7 +58,7 @@ class DriveState extends State {
         else if (scene.cursors.down.isDown) {
             truck.setFrame(1)
             truck.setFlipX(false)
-            truck.setFlipY(false)   // reset vertical flip
+            truck.setFlipY(false)
             truck.y += speed
             moving = true
         }
