@@ -1,6 +1,6 @@
-class PostOffice extends Phaser.Scene {
+class Intersection extends Phaser.Scene {
     constructor() {
-        super('postOfficeScene')
+        super('intersectionScene')
     }
 
     create() {
@@ -11,8 +11,10 @@ class PostOffice extends Phaser.Scene {
         this.bgm.play()
         // background
         this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
-        this.postoffice = this.add.tileSprite(100, 105, 1000, 600, 'postoffice').setOrigin(0, 0).setDepth(1)
-        this.scenecheck1 = this.add.tileSprite(100, 590, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        this.intersection = this.add.tileSprite(100, 105, 1000, 600, 'intersection').setOrigin(0, 0).setDepth(1)
+        this.stoplight = this.add.tileSprite(50, 165, 850, 640, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1)
+        this.crosswalk = this.add.tileSprite(350, 442, 64, 100, 'crosswalk').setOrigin(0, 0).setDepth(1)
+        this.scenecheck1 = this.add.tileSprite(100, 445, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
 
         this.truck = new Truck(this, 825, 300, 'truckwidespritesheet', 0).setDepth(2)
 
@@ -32,7 +34,7 @@ class PostOffice extends Phaser.Scene {
 
         // scene transition
         if (this.checkCollision(this.truck, this.scenecheck1)) {
-            this.scene.start('downtownScene')
+            this.scene.start('apartmentScene')
         }
 
         // check wall collisions

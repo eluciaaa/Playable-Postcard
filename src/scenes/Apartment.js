@@ -4,8 +4,8 @@ class Apartment extends Phaser.Scene {
     }
 
     create() { 
-        this.letterbg = this.add.tileSprite(0, 0, 1000, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
-        this.apartment = this.add.tileSprite(100, 105, 800, 600, 'apartment').setOrigin(0, 0).setDepth(0)
+        this.letterbg = this.add.tileSprite(0, 0, 2000, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
+        this.apartment = this.add.tileSprite(100, 105, 1000, 600, 'apartment').setOrigin(0, 0).setDepth(0)
         this.stoplight1 = this.add.tileSprite(420, -135, 850, 640, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1)
         this.crosswalk1 = this.add.tileSprite(710, 137, 64, 100, 'crosswalk').setOrigin(0, 0).setDepth(1)
         this.stoplight2 = this.add.tileSprite(265, 730, 850, 640, 'stoplight').setOrigin(0, 0).setDepth(3).setAngle(-90).setFrame(1)
