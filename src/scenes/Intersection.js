@@ -12,11 +12,19 @@ class Intersection extends Phaser.Scene {
         // background
         this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
         this.intersection = this.add.tileSprite(100, 105, 1000, 600, 'intersection').setOrigin(0, 0).setDepth(1)
-        this.stoplight = this.add.tileSprite(50, 165, 850, 640, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1)
-        this.crosswalk = this.add.tileSprite(350, 442, 64, 100, 'crosswalk').setOrigin(0, 0).setDepth(1)
-        this.scenecheck1 = this.add.tileSprite(100, 445, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        this.stoplight1 = this.add.tileSprite(165, 175, 126, 75, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1)
+        this.stoplight2 = this.add.tileSprite(325, 490, 126, 75, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1).setFlipX(true)
+        this.stoplight3 = this.add.tileSprite(480, 275, 126, 75, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1).setAngle(90).setFlipY(true)
+        this.stoplight4 = this.add.tileSprite(210, 410, 126, 75, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1).setAngle(90).setFlipX(true)
+        this.crosswalk1 = this.add.tileSprite(440, 290, 55, 230, 'crosswalk').setOrigin(0, 0).setDepth(1)
+        this.crosswalk2 = this.add.tileSprite(125, 270, 55, 250, 'crosswalk').setOrigin(0, 0).setDepth(1)
+        this.crosswalk3 = this.add.tileSprite(435, 525, 55, 250, 'crosswalk').setOrigin(0, 0).setDepth(1).setAngle(90)
+        this.crosswalk4 = this.add.tileSprite(415, 210, 55, 230, 'crosswalk').setOrigin(0, 0).setDepth(1).setAngle(90)
+        this.scenecheck = this.add.tileSprite(160, 730, 300, 3, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        //this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0, 0).setDepth(3)
+        this.arrow = this.add.tileSprite(235, 720, 150, 150, 'arrow').setOrigin(0, 0).setDepth(1).setAngle(270)
 
-        this.truck = new Truck(this, 825, 300, 'truckwidespritesheet', 0).setDepth(2)
+        this.truck = new Truck(this, 825, 320, 'truckwidespritesheet', 0).setDepth(2)
 
         // x, y, width, height
         //this.collcheck1 = this.add.rectangle(710, 390, 180, 305, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
@@ -33,8 +41,16 @@ class Intersection extends Phaser.Scene {
         this.truckFSM.step()
 
         // scene transition
-        if (this.checkCollision(this.truck, this.scenecheck1)) {
+        if (this.checkCollision(this.truck, this.scenecheck)) {
             this.scene.start('apartmentScene')
+        }
+
+        // bug workaround
+        if (Phaser.Geom.Intersects.RectangleToRectangle(
+            this.truck.getBounds(),
+            this.arrow.getBounds()
+        )) {
+            this.arrow.setAlpha(0)
         }
 
         // check wall collisions
@@ -62,13 +78,4 @@ class Intersection extends Phaser.Scene {
             obj1.y + obj1.height > obj2.y
         )
     }
-
-    //checkTruckCollisions() {
-        //return (
-            //this.checkCollision(this.truck, this.collcheck1) ||
-            //this.checkCollision(this.truck, this.collcheck2) ||
-            //this.checkCollision(this.truck, this.collcheck3) ||
-            //this.checkCollision(this.truck, this.collcheck4)
-        //)
-    //}
 }

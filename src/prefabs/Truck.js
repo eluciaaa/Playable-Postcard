@@ -14,12 +14,9 @@ class Truck extends Phaser.GameObjects.Sprite {
 
 // state classes
 class StopState extends State {
-
     enter(scene, truck) {
     }
-
     execute(scene, truck) {
-
         if (
             scene.cursors.left.isDown ||
             scene.cursors.right.isDown ||
@@ -28,14 +25,11 @@ class StopState extends State {
         ) {
             this.stateMachine.transition('drive')
         }
-
     }
 }
 
 class DriveState extends State {
-
     execute(scene, truck) {
-
         const speed = 2.5
         let moving = false
 
@@ -46,7 +40,6 @@ class DriveState extends State {
             truck.x -= speed
             moving = true
         }
-
         else if (scene.cursors.right.isDown) {
             truck.setFrame(0)
             truck.setFlipX(true)
@@ -54,7 +47,6 @@ class DriveState extends State {
             truck.x += speed
             moving = true
         }
-
         else if (scene.cursors.down.isDown) {
             truck.setFrame(1)
             truck.setFlipX(false)
@@ -62,7 +54,6 @@ class DriveState extends State {
             truck.y += speed
             moving = true
         }
-
         else if (scene.cursors.up.isDown) {
             truck.setFrame(1)
             truck.setFlipX(false)
@@ -70,10 +61,8 @@ class DriveState extends State {
             truck.y -= speed
             moving = true
         }
-
         if (!moving) {
             this.stateMachine.transition('stop')
         }
-
     }
 }

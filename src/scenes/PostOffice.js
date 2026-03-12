@@ -9,12 +9,28 @@ class PostOffice extends Phaser.Scene {
             loop: true
         })
         this.bgm.play()
+
+        let menuConfig = {
+            fontFamily: 'Verdana',
+            fontSize: '35px',
+            color: '#ffffff',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
+
         // background
         this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
         this.postoffice = this.add.tileSprite(100, 105, 1000, 600, 'postoffice').setOrigin(0, 0).setDepth(1)
-        this.scenecheck1 = this.add.tileSprite(100, 590, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        this.scenecheck = this.add.tileSprite(100, 590, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0, 0).setDepth(3)
 
-        this.truck = new Truck(this, 825, 300, 'truckwidespritesheet', 0).setDepth(2)
+        this.text1 = this.add.text(610, 430, 'Use arrow keys to move', menuConfig).setOrigin(0.5).setDepth(1)
+
+        this.truck = new Truck(this, 1000, 360, 'truckwidespritesheet', 1).setDepth(2)
 
         // x, y, width, height
         //this.collcheck1 = this.add.rectangle(710, 390, 180, 305, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
@@ -31,8 +47,17 @@ class PostOffice extends Phaser.Scene {
         this.truckFSM.step()
 
         // scene transition
-        if (this.checkCollision(this.truck, this.scenecheck1)) {
+        if (this.checkCollision(this.truck, this.scenecheck)) {
             this.scene.start('downtownScene')
+        }
+
+        if (
+            Phaser.Input.Keyboard.JustDown(this.cursors.left) ||
+            Phaser.Input.Keyboard.JustDown(this.cursors.right) ||
+            Phaser.Input.Keyboard.JustDown(this.cursors.up) ||
+            Phaser.Input.Keyboard.JustDown(this.cursors.down)
+        ) {
+            this.text1.setVisible(false)
         }
 
         // check wall collisions

@@ -12,11 +12,11 @@ class Downtown extends Phaser.Scene {
         // background
         this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
         this.downtown = this.add.tileSprite(100, 105, 1000, 600, 'downtown').setOrigin(0, 0).setDepth(1)
-        this.stoplight = this.add.tileSprite(50, 165, 850, 640, 'stoplight').setOrigin(0, 0).setDepth(3).setFrame(1)
-        this.crosswalk = this.add.tileSprite(350, 442, 64, 100, 'crosswalk').setOrigin(0, 0).setDepth(1)
-        this.scenecheck1 = this.add.tileSprite(100, 445, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        this.scenecheck1 = this.add.tileSprite(100, 260, 3, 20, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        this.scenecheck2 = this.add.tileSprite(100, 340, 3, 20, 'scenecheck').setOrigin(0, 0).setDepth(1)
+        //this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0, 0).setDepth(3)
 
-        this.truck = new Truck(this, 825, 300, 'truckwidespritesheet', 0).setDepth(2)
+        this.truck = new Truck(this, 1060, 320, 'truckwidespritesheet', 0).setDepth(2)
 
         // x, y, width, height
         //this.collcheck1 = this.add.rectangle(710, 390, 180, 305, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
@@ -32,9 +32,12 @@ class Downtown extends Phaser.Scene {
     update(time) {
         this.truckFSM.step()
 
-        // scene transition
+        // conditional scene transition with coords
         if (this.checkCollision(this.truck, this.scenecheck1)) {
-            this.scene.start('riverScene')
+            this.scene.start('riverScene', { x: 1100, y: 260 })
+        }
+        if (this.checkCollision(this.truck, this.scenecheck2)) {
+            this.scene.start('riverScene', { x: 1100, y: 325 })
         }
 
         // check wall collisions
