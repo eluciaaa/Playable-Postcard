@@ -4,6 +4,7 @@ class PostOffice extends Phaser.Scene {
     }
 
     create() {
+        // music
         this.bgm = this.sound.add('bgmusic', {
             volume: 0.3,
             loop: true
@@ -25,12 +26,15 @@ class PostOffice extends Phaser.Scene {
         // background
         this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
         this.postoffice = this.add.tileSprite(100, 105, 1000, 600, 'postoffice').setOrigin(0, 0).setDepth(1)
-        this.scenecheck = this.add.tileSprite(100, 590, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
-        this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0, 0).setDepth(3)
 
+        // ui
+        this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0, 0).setDepth(3)
         this.text1 = this.add.text(610, 430, 'Use arrow keys to move', menuConfig).setOrigin(0.5).setDepth(1)
 
+        // player and collision objects
         this.truck = new Truck(this, 1000, 360, 'truckwidespritesheet', 1).setDepth(2)
+        this.car = new Car(this, 1000, 360, 'car1', 1).setDepth(2)
+        this.scenecheck = this.add.tileSprite(100, 590, 3, 100, 'scenecheck').setOrigin(0, 0).setDepth(1)
 
         // x, y, width, height
         //this.collcheck1 = this.add.rectangle(710, 390, 180, 305, 0xff0000).setOrigin(0, 0).setDepth(1).setAlpha(0)
@@ -77,6 +81,7 @@ class PostOffice extends Phaser.Scene {
         //}
     }
 
+    // collision check function
     checkCollision(obj1, obj2) {
         return (
             obj1.x < obj2.x + obj2.width &&

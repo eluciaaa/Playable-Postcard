@@ -37,6 +37,18 @@ class Envelope extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         })
+        this.load.spritesheet('car1', 'car1spritesheet.png', {
+            frameWidth: 58,
+            frameHeight: 55
+        })
+        this.load.spritesheet('car2', 'car2spritesheet.png', {
+            frameWidth: 58,
+            frameHeight: 55
+        })
+        this.load.spritesheet('car3', 'car3spritesheet.png', {
+            frameWidth: 58,
+            frameHeight: 55
+        })
     }
 
     create() {
