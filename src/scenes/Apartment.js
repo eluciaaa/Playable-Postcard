@@ -115,7 +115,11 @@ class Apartment extends Phaser.Scene {
             }
         }
 
-      this.resetTruckOnCarCollision()
+        this.resetTruckOnCarCollision()
+
+        if (this.checkCollision(this.truck, this.finish)) {
+            this.scene.start('postcardScene')
+        }
 
         // bug workaround
         if (Phaser.Geom.Intersects.RectangleToRectangle(

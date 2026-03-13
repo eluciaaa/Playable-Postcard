@@ -49,6 +49,10 @@ class Envelope extends Phaser.Scene {
             frameWidth: 58,
             frameHeight: 55
         })
+        this.load.spritesheet('postcardflip', 'postcardanimation.png', {
+            frameWidth: 1200,
+            frameHeight: 800
+        })
     }
 
     create() {
@@ -68,14 +72,15 @@ class Envelope extends Phaser.Scene {
     // start on frame 0
         this.envelope = this.add.sprite(0, 0, 'envelopespritesheet', 0).setOrigin(0, 0).setDepth(0)
         
-        this.text1 = this.add.text(610, 140, "You've got mail!", menuConfig).setOrigin(0.5).setDepth(1)
-        this.text2 = this.add.text(610, 220, "Click to open", menuConfig).setOrigin(0.5).setDepth(1)
+        this.text1 = this.add.text(620, 140, "You've got mail!", menuConfig).setOrigin(0.5).setDepth(1)
+        this.text2 = this.add.text(620, 220, "Click to open", menuConfig).setOrigin(0.5).setDepth(1)
 
         this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
         this.key2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO)
         this.key3 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE)
         this.key4 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR)
         this.key5 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE)
+        this.key6 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SIX)
 
         this.input.on('pointerdown', () => {
 
@@ -109,6 +114,9 @@ class Envelope extends Phaser.Scene {
         }
         if (Phaser.Input.Keyboard.JustDown(this.key5)) {
             this.scene.start('apartmentScene')
+        }
+        if (Phaser.Input.Keyboard.JustDown(this.key6)) {
+            this.scene.start('postcardScene')
         }
     }
 }

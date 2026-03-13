@@ -14,7 +14,7 @@ const config = {
             debug: true
         }
     },
-    scene: [ Envelope, PostOffice, Downtown, River, Intersection, Apartment ],
+    scene: [ Envelope, PostOffice, Downtown, River, Intersection, Apartment, Postcard ],
     fps: {
         target: 60,
         forceSetTimeOut: true
