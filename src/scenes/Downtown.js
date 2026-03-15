@@ -5,133 +5,125 @@ class Downtown extends Phaser.Scene {
 
     create() {
         // music
-        this.bgm = this.sound.add('bgmusic', {
-            volume: 0.3,
-            loop: true
+        this.bgm = this.sound.add('bgmusic', { 
+            volume: 0.3, 
+            loop: true 
         })
         this.bgm.play()
 
+
         // background
-        this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
-        this.downtown = this.add.tileSprite(100, 105, 1000, 600, 'downtown').setOrigin(0, 0).setDepth(1)
+        this.letterbg = this.add.tileSprite(0,0,1200,800,'letterbg').setOrigin(0,0).setDepth(0)
+        this.downtown = this.add.tileSprite(100,105,1000,600,'downtown').setOrigin(0,0).setDepth(1)
 
         // ui
-        this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0, 0).setDepth(3)
+        this.cover = this.add.tileSprite(0,0,1200,800,'cover').setOrigin(0,0).setDepth(3)
 
-        // player and collision objects
-        this.scenecheck1 = this.add.tileSprite(100, 260, 3, 20, 'scenecheck').setOrigin(0, 0).setDepth(1)
-        this.scenecheck2 = this.add.tileSprite(100, 340, 3, 20, 'scenecheck').setOrigin(0, 0).setDepth(1)
-        this.truck = new Truck(this, 1060, 270, 'truckwidespritesheet', 0).setDepth(2)
+        // player
+        this.spawnX = 1060
+        this.spawnY = 270
+        this.truck = new Truck(this,this.spawnX,this.spawnY,'truckwidespritesheet',0).setDepth(2)
+
+        // disable collisions at spawn
+        this.truck.body.checkCollision.none = true
+        // enable collisions after 1 second
+        this.time.delayedCall(1000, () => {
+            this.truck.body.checkCollision.none = false
+        })
+
+        // physics groups
+        this.carGroup = this.physics.add.group()
+        this.pedestrianGroup = this.physics.add.group()
+
+        // cars
         this.cars = []
         this.maxCars = 10
         this.lanes = [
-            { x: 1200, y: 345, dir: 'left' },
-            { x: 1200, y: 285, dir: 'left' },
-            { x: 0, y: 445, dir: 'right' },
-            { x: 0, y: 505, dir: 'right' }
+            { x:1200, y:345, dir:'left' },
+            { x:1200, y:285, dir:'left' },
+            { x:0, y:445, dir:'right' },
+            { x:0, y:505, dir:'right' }
         ]
-        this.spawnCar()
+        this.carGroup.addMultiple(this.cars)
+
+        // pedestrians
+        this.pedestrians = [
+            new Pedestrian(this,100,230,'pedestrian',[{dir:'right',dist:Infinity}]),
+            new Pedestrian(this,525,525,'pedestrian',[{dir:'left',dist:Infinity}]),
+            new Pedestrian(this,1000,525,'pedestrian',[{dir:'left',dist:Infinity}])
+        ]
+        this.pedestrianGroup.addMultiple(this.pedestrians)
+
+        // scene transitions
+        this.scenecheck1 = this.physics.add.staticSprite(100,280,'scenecheck').setAlpha(0)
+        this.scenecheck1.body.setSize(3,20)
+        this.scenecheck2 = this.physics.add.staticSprite(100,340,'scenecheck').setAlpha(0)
+        this.scenecheck2.body.setSize(3,20)
+
+        // physics collisions
+        this.physics.add.overlap(this.truck,this.carGroup, () => {
+            this.truck.setPosition(this.spawnX,this.spawnY)
+        })
+        this.physics.add.overlap(this.truck,this.pedestrianGroup, () => {
+            this.truck.setPosition(this.spawnX,this.spawnY)
+        })
+        this.physics.add.overlap(this.truck,this.scenecheck1, () => {
+            this.scene.start('riverScene',{x:1100,y:270})
+        })
+        this.physics.add.overlap(this.truck,this.scenecheck2, () => {
+            this.scene.start('riverScene',{x:1100,y:330})
+        })
 
         this.cursors = this.input.keyboard.createCursorKeys()
+
+        // start traffic
+        this.spawnCar()
     }
 
-    // traffic spawn function
+    // traffic spawner function
     spawnCar() {
 
-        if (this.cars.length >= this.maxCars) {
-            this.time.delayedCall(500, this.spawnCar, [], this)
+        if(this.cars.length >= this.maxCars){
+            this.time.delayedCall(500,this.spawnCar,[],this)
             return
         }
 
-        let lanes = Phaser.Utils.Array.Shuffle([0,1,2,3])
-        let lane = null
+        let lane = Phaser.Utils.Array.GetRandom(this.lanes)
 
-        for (let laneIndex of lanes) {
+        let carTexture = Phaser.Math.RND.pick(['car1','car2','car3'])
+        let car = new Car(this,lane.x,lane.y,carTexture,0,lane.dir,3)
 
-            let testLane = this.lanes[laneIndex]
-            let blocked = false
-
-            for (let car of this.cars) {
-
-                if (car.y === testLane.y) {
-
-                    if (testLane.dir === 'left' && car.x > 1000) blocked = true
-                    if (testLane.dir === 'right' && car.x < 200) blocked = true
-                }
-            }
-
-            if (!blocked) {
-                lane = testLane
-                break
-            }
-        }
-
-        // if all lanes blocked, try again later
-        if (!lane) {
-            this.time.delayedCall(400, this.spawnCar, [], this)
-            return
-        }
-
-        let carTexture = Phaser.Math.RND.pick(['car3','car2','car1'])
-
-        let car = new Car(this, lane.x, lane.y, carTexture, 0, lane.dir, 3)
         this.cars.push(car)
+        this.carGroup.add(car)
 
         this.time.delayedCall(
-            Phaser.Math.Between(1200, 2500),
+            Phaser.Math.Between(1200,2500),
             this.spawnCar,
             [],
             this
         )
     }
 
-    resetTruckOnCollision() {
-        let truck = this.truck
-
-        for (let car of this.cars) {
-            if (Phaser.Geom.Intersects.RectangleToRectangle(truck.getBounds(), car.getBounds())) {
-                truck.x = 1060
-                truck.y = 270
-                return true
-            }
-        }
-        return false
-    }
-
-    update(time) {
+    update() {
         this.truckFSM.step()
 
-        // multiple cars check and reset
-        for (let i = this.cars.length - 1; i >= 0; i--) {
+        // update pedestrians
+        this.pedestrianGroup.children.iterate(ped => {
+            ped.update()
+        })
 
-            let car = this.cars[i]
+        // update cars
+        this.carGroup.children.iterate(car => {
+
             car.update()
 
-            if (car.x < -200 || car.x > 1400) {
+            // cleanup cars that leave screen
+            if (car.x < -200 || car.x > 1400 || car.y < -100 || car.y > 900) {
+
                 car.destroy()
-                this.cars.splice(i, 1)
+                this.cars.splice(this.cars.indexOf(car), 1)
+
             }
-        }
-
-        // reset truck if it hits a car
-        this.resetTruckOnCollision()
-
-        // conditional scene transition with coords
-        if (this.checkCollision(this.truck, this.scenecheck1)) {
-            this.scene.start('riverScene', { x: 1100, y: 270 })
-        }
-        if (this.checkCollision(this.truck, this.scenecheck2)) {
-            this.scene.start('riverScene', { x: 1100, y: 330 })
-        }
-    }
-
-    // collision check function
-    checkCollision(obj1, obj2) {
-        return (
-            obj1.x < obj2.x + obj2.width &&
-            obj1.x + obj1.width > obj2.x &&
-            obj1.y < obj2.y + obj2.height &&
-            obj1.y + obj1.height > obj2.y
-        )
+        })
     }
 }

@@ -49,6 +49,10 @@ class Envelope extends Phaser.Scene {
             frameWidth: 58,
             frameHeight: 55
         })
+        this.load.spritesheet('pedestrian', 'pedestrianspritesheet.png', {
+            frameWidth: 30,
+            frameHeight: 46
+        })
         this.load.spritesheet('postcardflip', 'postcardanimation.png', {
             frameWidth: 1200,
             frameHeight: 800
