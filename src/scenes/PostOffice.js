@@ -21,11 +21,11 @@ class PostOffice extends Phaser.Scene {
         }
 
         // background
-        this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0, 0).setDepth(0)
-        this.postoffice = this.add.tileSprite(100, 105, 1000, 600, 'postoffice').setOrigin(0, 0).setDepth(1)
+        this.letterbg = this.add.tileSprite(0, 0, 1200, 800, 'letterbg').setOrigin(0,0).setDepth(0)
+        this.postoffice = this.add.tileSprite(100, 105, 1000, 600, 'postoffice').setOrigin(0,0).setDepth(1)
 
         // ui
-        this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0, 0).setDepth(3)
+        this.cover = this.add.tileSprite(0, 0, 1200, 800, 'cover').setOrigin(0,0).setDepth(3)
         this.text1 = this.add.text(610, 430, 'Use arrow keys to move', menuConfig).setOrigin(0.5).setDepth(1)
 
         // player
@@ -38,6 +38,18 @@ class PostOffice extends Phaser.Scene {
             this.truck.body.checkCollision.none = false
         })
 
+        // map barriers
+        this.barrier1 = this.add.rectangle(600, 215, 1000, 200, 0x6666ff)
+        this.physics.add.existing(this.barrier1, true)
+        this.barrier2 = this.add.rectangle(675, 633, 850, 133, 0x6666ff)
+        this.physics.add.existing(this.barrier2, true)
+        this.barrier3 = this.add.rectangle(120, 360, 25, 450, 0x6666ff)
+        this.physics.add.existing(this.barrier3, true)
+        this.barrier4 = this.add.rectangle(250, 515, 60, 100, 0x6666ff)
+        this.physics.add.existing(this.barrier4, true)
+        this.barrier5 = this.add.rectangle(1083, 360, 25, 450, 0x6666ff)
+        this.physics.add.existing(this.barrier5, true)
+
         // physics groups
         this.carGroup = this.physics.add.group()
         this.pedestrianGroup = this.physics.add.group()
@@ -45,7 +57,11 @@ class PostOffice extends Phaser.Scene {
         // cars
         this.cars = [
             new Car(this, 700, 350, 'car2', 1),
-            new Car(this, 500, 400, 'car2', 0)
+            new Car(this, 480, 530, 'car1', 1).setAngle(180),
+            new Car(this, 300, 530, 'car2', 1).setAngle(180),
+            new Car(this, 840, 530, 'car3', 1).setAngle(180),
+            new Car(this, 165, 350, 'car1', 1),
+            new Car(this, 342, 350, 'car3', 1)
         ]
         this.carGroup.addMultiple(this.cars)
 
@@ -57,13 +73,18 @@ class PostOffice extends Phaser.Scene {
         this.pedestrianGroup.addMultiple(this.pedestrians)
 
         // scene transitions
-        this.scenecheck1 = this.physics.add.staticSprite(100, 600, 'scenecheck').setOrigin(0, 0).setDepth(1).setAlpha(0)
-        this.scenecheck1.body.setSize(3, 100)
+        this.scenecheck1 = this.physics.add.staticSprite(100, 635, 'scenecheck').setOrigin(0,0).setDepth(1).setAlpha(0)
+        this.scenecheck1.body.setSize(3, 115)
 
         // physics collisions
         this.physics.add.overlap(this.truck, this.carGroup, () => this.truck.setPosition(1000, 360))
         this.physics.add.overlap(this.truck, this.pedestrianGroup, () => this.truck.setPosition(1000, 360))
         this.physics.add.overlap(this.truck, this.scenecheck1, () => this.scene.start('downtownScene'), null, this)
+        this.physics.add.overlap(this.truck, this.barrier1, () => this.truck.setPosition(1000, 360))
+        this.physics.add.overlap(this.truck, this.barrier2, () => this.truck.setPosition(1000, 360))
+        this.physics.add.overlap(this.truck, this.barrier3, () => this.truck.setPosition(1000, 360))
+        this.physics.add.overlap(this.truck, this.barrier4, () => this.truck.setPosition(1000, 360))
+        this.physics.add.overlap(this.truck, this.barrier5, () => this.truck.setPosition(1000, 360))
 
         this.cursors = this.input.keyboard.createCursorKeys()
     }

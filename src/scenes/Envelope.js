@@ -24,6 +24,7 @@ class Envelope extends Phaser.Scene {
         this.load.image('scenecheck', 'scenecheck.png')
         this.load.image('arrow', 'arrow.png')
         this.load.image('cover', 'cover.png')
+        this.load.image('credits', 'credits.png')
 
         this.load.audio('bgmusic', 'bgmusic.wav')
         this.load.audio('rip', '804445__geoff-bremner-audio__paper-rip-18.wav')
@@ -76,7 +77,7 @@ class Envelope extends Phaser.Scene {
     // start on frame 0
         this.envelope = this.add.sprite(0, 0, 'envelopespritesheet', 0).setOrigin(0, 0).setDepth(0)
         
-        this.text1 = this.add.text(620, 140, "You've got mail!", menuConfig).setOrigin(0.5).setDepth(1)
+        this.text1 = this.add.text(620, 140, "You've Got Mail!", menuConfig).setOrigin(0.5).setDepth(1)
         this.text2 = this.add.text(620, 220, "Click to open", menuConfig).setOrigin(0.5).setDepth(1)
 
         this.key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
@@ -104,6 +105,7 @@ class Envelope extends Phaser.Scene {
     }
 
     update() {
+        // debug menu
         if (Phaser.Input.Keyboard.JustDown(this.key1)) {
             this.scene.start('postOfficeScene')
         }

@@ -49,39 +49,32 @@ class Pedestrian extends Phaser.Physics.Arcade.Sprite {
         if (this.direction === 'left') {
             // default sprite orientation
         }
-
         if (this.direction === 'right') {
             this.setFlipX(true)
         }
-
         if (this.direction === 'up') {
             this.setRotation(90)
         }
-
         if (this.direction === 'down') {
             this.setRotation(-90)
         }
     }
 
     update() {
-
         let moved = 0
 
         if (this.direction === 'left') {
             this.x -= this.speed
             moved = this.speed
         }
-
         if (this.direction === 'right') {
             this.x += this.speed
             moved = this.speed
         }
-
         if (this.direction === 'up') {
             this.y -= this.speed
             moved = this.speed
         }
-
         if (this.direction === 'down') {
             this.y += this.speed
             moved = this.speed
@@ -93,17 +86,14 @@ class Pedestrian extends Phaser.Physics.Arcade.Sprite {
             this.x = 1100
             this.startX = this.x
         }
-
         if (this.x > 1100) {
             this.x = -100
             this.startX = this.x
         }
-
         if (this.y < -100) {
             this.y = 900
             this.startY = this.y
         }
-
         if (this.y > 900) {
             this.y = -100
             this.startY = this.y

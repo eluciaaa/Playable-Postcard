@@ -9,20 +9,17 @@ class Truck extends Phaser.Physics.Arcade.Sprite {
         this.updateHitbox()
         this.setCollideWorldBounds(false)
 
-        // initialize state machine managing truck (initial state, possible states, state args[])
         scene.truckFSM = new StateMachine('stop', {
             stop: new StopState(),
             drive: new DriveState(),
-        }, [scene, this])   // pass these as arguments to maintain scene/object context in the FSM
+        }, [scene, this])
     }
 
     updateHitbox() {
-        // frame 0 = sideways
         if (this.frame.name === 0) {
             this.body.setSize(60, 30)
             this.body.setOffset(0, 30)
         }
-        // frame 1 = vertical
         if (this.frame.name === 1) {
             this.body.setSize(30, 60)
             this.body.setOffset(17, 1)
